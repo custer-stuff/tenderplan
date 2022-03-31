@@ -4,7 +4,7 @@
 docker build . -t ubuntu
 docker run -v /var/run/docker.sock:/var/run/docker.sock -ti ubuntu
 ```
-По готовности пройти на [http://localhost:80](http://localhost:80)
+По готовности пройти на <a href="http://localhost:80" target="_blank">http://localhost:80</a>
 ## Описание
 Выполенный проект тестовго задания, без пункта №5 (настройка фаервола)
 По ТЗ тестовый стенд представляет из себя сервер с ОС Ubuntu 20.04, так как данной оси под рукой не оказалось, проект разворачивается на докер-образе ubuntu 20.04.
