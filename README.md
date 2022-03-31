@@ -24,6 +24,6 @@ docker run -v /var/run/docker.sock:/var/run/docker.sock -ti ubuntu
     - установка docker
     - установка зависимостей docker-compose   
     - установка docker-compose
-- запуск docker-compose.yml с сервисами
-    - nginx в роли прокси от графаны на 80 порт
-    - grafana 
+    - запуск docker-compose.yml с сервисами
+        - nginx в роли прокси от графаны на 80 порт
+        - grafana 
