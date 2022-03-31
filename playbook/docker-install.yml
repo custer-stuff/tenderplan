@@ -1,0 +1,54 @@
+---
+- hosts: localhost
+  become: true
+
+  tasks:
+  - name: Install aptitude using apt
+    apt: name=aptitude state=latest update_cache=yes force_apt_get=yes
+
+  - name: Install required system packages
+    apt: name={{ item }} state=latest update_cache=yes
+    loop: [ 'apt-transport-https', 'ca-certificates', 'software-properties-common', 'virtualenv', 'python3-setuptools']
+
+  - name: Add Docker GPG apt Key
+    apt_key:
+      url: https://download.docker.com/linux/ubuntu/gpg
+      state: present
+
+  - name: Add Docker Repository
+    apt_repository:
+      repo: deb https://download.docker.com/linux/ubuntu bionic stable
+      state: present
+
+  - name: Update apt and install docker-ce
+    apt: update_cache=yes name=docker-ce state=latest
+
+  - name: Install Docker Module for Python
+    pip:
+      name: docker
+
+  - name: Install jsondiff
+    pip:
+      name: jsondiff
+
+  - name: Install pyyaml
+    pip:
+      name: pyyaml
+
+  - name: Pull docker-compose repo
+    ansible.builtin.shell: sudo curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+
+  - name: Make docker-compose repo executable
+    command: chmod +x /usr/local/bin/docker-compose
+    become: true
+    become_user: root
+
+  - name: Add symlink for repo
+    command: ln -s /usr/local/bin/docker-compose /usr/bin/docker-compose
+    become: true
+    become_user: root
+
+  - name: Start docker compose
+    command: sudo docker-compose up --build
+    become: true
+    become_user: root

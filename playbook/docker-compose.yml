@@ -1,0 +1,21 @@
+version: '3'
+
+networks:
+  laravel:
+
+services:
+  nginx:
+    restart: always
+    build:
+      context: services/nginx
+      dockerfile: Dockerfile
+    container_name: nginx
+    ports:
+    - "80:80"
+  grafana:
+    build:
+      context: services/grafana
+      dockerfile: Dockerfile
+    container_name: grafana
+    ports:
+    - "3000:3000"

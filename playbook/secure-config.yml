@@ -1,0 +1,35 @@
+---
+- hosts: localhost
+  become: true
+
+  tasks:
+  - name: Create devops user
+    user:
+      name: "devops"
+      password: "password"
+      groups:
+      - sudo
+      state: present
+
+  - name: Disable password Authentication
+    ansible.builtin.lineinfile:
+      dest: /etc/ssh/sshd_config
+      regexp: '^PasswordAuthentication'
+      line: "PasswordAuthentication no"
+      state: present
+      backup: yes
+
+  - name: Deny root logging with ssh
+    ansible.builtin.lineinfile:
+      dest: /etc/ssh/sshd_config
+      regexp: '^(#)?PermitRootLogin \w*$'
+      line: 'PermitRootLogin no'
+      state: present
+    notify:
+    - restart ssh
+
+  handlers:
+  - name: restart ssh
+    service:
+      name=sshd
+      state=restarted
